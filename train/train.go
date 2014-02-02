@@ -36,3 +36,13 @@ func (t *Train) RelativeSpeedChange(speed int) uint8 {
 func NormalizeSpeed(speed int) uint8 {
 	return uint8(math.Min((math.Max(float64(speed), 0)), math.MaxUint8))
 }
+
+func NewTrain(description string) *Train {
+	t := new(Train)
+	t.Description = description
+	t.Forward = true
+	t.Speed = 0
+
+	return t
+
+}
