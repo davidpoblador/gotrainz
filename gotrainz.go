@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Train struct {
 	id          uint8
@@ -67,6 +69,12 @@ func main() {
 	//fmt.Println(trains)
 }
 
+// Delete a train from the system
+func deltrain(id uint8) {
+	delete(trains, id)
+}
+
+// Add a new train
 func newtrain(id uint8, description string) bool {
 
 	if _, ok := trains[id]; ok == true {
