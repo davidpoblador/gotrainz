@@ -40,6 +40,29 @@ func NormalizeSpeed(speed int) uint8 {
 	return uint8(math.Min((math.Max(float64(speed), 0)), math.MaxUint8))
 }
 
+// Delete a train from the system
+func deltrain(id uint8) {
+	delete(trains, id)
+}
+
+// Add a new train
+func newtrain(id uint8, description string) bool {
+
+	if _, ok := trains[id]; ok == true {
+		return false
+	}
+
+	train := new(Train)
+	train.description = description
+	train.forward = true
+	train.speed = 0
+
+	// Store train
+	trains[id] = *train
+
+	return true
+}
+
 func main() {
 	trains = make(map[uint8]Train)
 
@@ -67,27 +90,4 @@ func main() {
 	// Test relative speed change
 	//trains[1].RelativeSpeedChange(-20)
 	//fmt.Println(trains)
-}
-
-// Delete a train from the system
-func deltrain(id uint8) {
-	delete(trains, id)
-}
-
-// Add a new train
-func newtrain(id uint8, description string) bool {
-
-	if _, ok := trains[id]; ok == true {
-		return false
-	}
-
-	train := new(Train)
-	train.description = description
-	train.forward = true
-	train.speed = 0
-
-	// Store train
-	trains[id] = *train
-
-	return true
 }
