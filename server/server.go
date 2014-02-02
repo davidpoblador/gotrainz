@@ -1,17 +1,18 @@
 package main
 
 import (
+	//	"encoding/json"
 	"fmt"
-	"github.com/davidpoblador/gotrainz/train"
+	. "github.com/davidpoblador/gotrainz/train"
 	"io"
 	"log"
 	"net/http"
 )
 
-var trains map[uint8]train.Train
+var trains map[uint8]*Train
 
 func main() {
-	trains = make(map[uint8]train.Train)
+	trains = make(map[uint8]*Train)
 
 	http.HandleFunc("/train/list", ListTrains)
 
@@ -20,19 +21,14 @@ func main() {
 		log.Fatalf("Error: %s", err)
 	}
 
-	NewTrain(4, "loco 2")
-	fmt.Println(trains)
-
-	NewTrain(1, "loco 1")
-	fmt.Println(trains)
-
-	t1 := trains[4]
-	fmt.Println("t1 ", t1)
-	t1.DirectionChange()
-	fmt.Println("t1 ", t1)
-
-	fmt.Println(trains[99])
-
+	//AddTrain(4, "loco 2")
+	//fmt.Println(trains)
+	//fmt.Println(*trains[4])
+	//trains[4].DirectionChange()
+	//AddTrain(1, "loco 1")
+	////	fmt.Println(trains)
+	//fmt.Println(*trains[4])
+	//	fmt.Println(trains)
 	// Test direction change
 	//trains[1].DirectionChange()
 	//fmt.Println(trains)
@@ -51,25 +47,23 @@ func DelTrain(id uint8) {
 	delete(trains, id)
 }
 
-// hello world, the web server
-func ListTrains(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "dummy response\n")
+// Add a new train
+func AddTrain(id uint8, description string) {
+	if _, ok := trains[id]; ok == true {
+		return
+	}
+	// Store train
+	a := NewTrain(description)
+
+	trains[id] = a
+
+	//	trains[id].fmt.Println(a)
 }
 
-// Add a new train
-func NewTrain(id uint8, description string) bool {
+// HTTP API
 
-	if _, ok := trains[id]; ok == true {
-		return false
-	}
-
-	train := new(train.Train)
-	train.Description = description
-	train.Forward = true
-	train.Speed = 0
-
-	// Store train
-	trains[id] = *train
-
-	return true
+// List Trains
+func ListTrains(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "test\n")
+	fmt.Println("")
 }
