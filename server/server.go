@@ -3,12 +3,22 @@ package main
 import (
 	"fmt"
 	"github.com/davidpoblador/gotrainz/train"
+	"io"
+	"log"
+	"net/http"
 )
 
 var trains map[uint8]train.Train
 
 func main() {
 	trains = make(map[uint8]train.Train)
+
+	http.HandleFunc("/train/list", ListTrains)
+
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatalf("Error: %s", err)
+	}
 
 	NewTrain(4, "loco 2")
 	fmt.Println(trains)
@@ -39,6 +49,11 @@ func main() {
 // Delete a train from the system
 func DelTrain(id uint8) {
 	delete(trains, id)
+}
+
+// hello world, the web server
+func ListTrains(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "dummy response\n")
 }
 
 // Add a new train
